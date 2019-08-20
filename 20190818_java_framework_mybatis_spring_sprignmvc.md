@@ -356,8 +356,159 @@
 # springboot
 
 1. 搭建 springboot 环境
+
    * 导入 起步依赖
    * 导入功能坐标
    * 导入配置
+
 2. 启动原理，覆盖tmcat 8080 为8888 ???
-3. 
+
+3. 加载自定义数据 @ConfigurationProperties
+
+   @value
+
+   ```xml
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot.configuration-processor<artifactId>
+   ```
+
+   
+
+4. 整合 mybastic
+
+   * 导入mybatis-sprintboot 坐标，导入mysql驱动坐标
+
+     ```xml
+     		<dependency>
+     			<groupId>org.mybatis.spring.boot</groupId>
+     			<artifactId>mybatis-spring-boot-starter</artifactId>
+     			<version>1.3.0</version>
+     		</dependency>
+     		<dependency>
+     			<groupId>mysql</groupId>
+     			<artifactId>mysql-connector-java</artifactId>
+     			<version>5.1.35</version>
+     		</dependency>
+     ```
+
+     
+
+   * 配置数据库连接信息
+
+     ```yaml
+     spring:
+         datasource:
+             name: test
+             url: jdbc:mysql://127.0.0.1:3306/depot
+             username: root
+             password: root
+             # 使用druid数据源
+             type: com.alibaba.druid.pool.DruidDataSource
+             driver-class-name: com.mysql.jdbc.Driver
+             filters: stat
+             maxActive: 20
+             initialSize: 1
+             maxWait: 60000
+             minIdle: 1
+             timeBetweenEvictionRunsMillis: 60000
+             minEvictableIdleTimeMillis: 300000
+             validationQuery: select 'x'
+             testWhileIdle: true
+             testOnBorrow: false
+             testOnReturn: false
+             poolPreparedStatements: true
+             maxOpenPreparedStatements: 20
+     ```
+
+     
+
+   * 编写实体类和 mapper配置文件
+
+   * 配置 实体类包信息和 mapper文件路径信息
+
+     ```yaml
+     mybatis:
+       mapper-locations: classpath:mapping/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
+       type-aliases-package: com.winter.model  # 注意：对应实体类的路径
+     ```
+
+     或者，在 springboot 的引导程序中增加
+
+      ```java
+     @mapperScan(basepackage="")
+      ```
+
+     
+
+5. 整合 junit
+
+   | 方法                 | 描述 |      |
+   | -------------------- | ---- | ---- |
+   | beforeClass          |      |      |
+   | afterClass           |      |      |
+   | Before               |      |      |
+   | After                |      |      |
+   | test(timeout=1000)   |      |      |
+   | test(expected=class) |      |      |
+   | Runwith              |      |      |
+   | Test                 |      |      |
+
+   
+
+   * 导入起步依赖
+
+     ```xml
+                 <groupId>org.springframework.boot</groupId>
+                 <artifactId>spring-boot-starter-test</artifactId>
+                 <scope>test</scope>
+     ```
+
+     
+
+6. 整合 log4j
+
+   ```java
+   @RunWith(SpringRunner.class)
+   //ItodoApplication springboot的启动类
+   @SpringBootTest(classes = ItodoApplication.class)			
+   ```
+
+7. 整合事务支持
+
+   ```java
+   @enableTransactionManagement
+   
+   // 在业务层
+   @Transactional
+   ```
+
+8. html 页面跳转
+
+9. springboot的监听器 applicationlistener
+
+   * ApplicationContextEvent
+   * ApplicationRefreshEvent
+   * ApplicationStartEvent
+   * ApplicationStopEvent
+   * ApplicationCloseEvent
+
+# netty
+
+1. 网络知识 
+   * 三次握手，四次挥手
+   * 标志位
+   * 同步异步 阻塞非阻塞
+2. Netty 的 reactor 模型
+   * 单线程模型
+   * 多线程模型
+   * 主从多线程模型
+3. netty 前后端的环境搭建
+   * 发起连接，建立连接，发送消息，广播消息
+   * 上线下线
+     * onopen
+     * onmessage
+     * onclose
+     * sendMessage
+   * 制定转发
+   * 上线加载
+
